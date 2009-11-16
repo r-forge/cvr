@@ -43,7 +43,36 @@ echo $contents; } ?>
 
 <!-- end of project description -->
 
-<p> No content added. </p>
+<p> This is cvr. <br />
+It is (will be) a current versioning system for R workspaces. It logs any command which modifies the R workspace (modifications are detected by the md5 hash of the R workspace). <br />
+Users can then read the history of the transformations done, plot a flowchart, or rewind to any step in time. Each command can also be tagged by a comment.<br />
+<p>Here is an example: </p>
+<p>...following the fist few operations...</p>
+
+<p>library(cvr)<br />
+cvrdo('a &lt;- 1', 'first change')<br />
+cvrdo('b &lt;- 2', 'second change')<br />
+cvrdo('a &lt;- 1', 'this will not be logged')<br />
+cvrdo('d &lt;- a + b', 'simple operation')<br />
+cvrgraph()<br /></p>
+<p align="left"><a href="images/cvr1.png"><img src="images/cvr1.png" width="297" height="301" /></a></p>
+<p>...rewinding...</p>
+
+<p>cvrrewind(7536)<br />
+cvrgraph()<br /></p>
+
+<p align="left"><a href="images/cvr2.png"><img src="images/cvr2.png" width="297" height="301" /></a></p>
+
+<p>...branching...</p>
+
+<p>cvrdo('e &lt;- max(a,b)', 'simple operation')<br />
+cvrgraph()<br /></p>
+
+<p align="left"><a href="images/cvr3.png"><img src="images/cvr3.png" width="297" height="301" /></a></p>
+
+<p>(clearly, some work has yet to be done for correct positioning... :-)</p>
+
+</p>
 
 <p> The <strong>project summary page</strong> you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>. </p>
 
