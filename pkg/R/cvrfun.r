@@ -161,17 +161,14 @@ cvrgraph <- function(){
 			print(tmat$versionnumber[i])
 			print(length(which(tmat$vnbefore==tmat$versionnumber[i-1])))
 			if (length(which(tmat$vnbefore==tmat$versionnumber[i-1]))>1){
-				print('più di uno')
 				plot.x <- plot.x +1
 				plot.y <- plot.y 
 			}
 			if (length(which(tmat$vnbefore==tmat$versionnumber[i-1]))==1){
-				print('unico')
 				plot.x <- 1
 				plot.y <- plot.y + 1
 			}
 			if (length(which(tmat$vnbefore==tmat$versionnumber[i-1]))<1){
-				print('meno di uno????')
 				plot.x <- 1
 				plot.y <- plot.y + 1
 			}
@@ -182,10 +179,10 @@ cvrgraph <- function(){
 		}
 		plotM <- print(rbind(c(1,1), plotM))
 		dev.new()
-		Xscale <- 1/(plot.xn+1)
-		Yscale <- 1/(plot.yn+1)
+		Xscale <- 1/(max(plotM[,1]))
+		Yscale <- 1/(max(plotM[,2]))
 		plotMscaled<- cbind(plotM[,1]*Xscale-Xscale/2, 1-plotM[,2]*Yscale+Yscale/2)
-		print(plotM)
+		print(plotMscaled)
 		print(Xscale)
 		print(Yscale)
 		plotmat(M, name=states.name, curve=.1, box.type="rect", box.size=1/states.n^1.5, box.prop=.5, box.col=col, pos=plotMscaled)																																	
