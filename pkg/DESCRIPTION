@@ -1,0 +1,11 @@
+Package: cvr
+Type: Package
+Title: A very simple current versioning system for R
+Version: 0.1
+Date: 2009-09-28
+Author: Andrea De Cesarei
+Maintainer: Andrea De Cesarei <andrea.dece@gmail.com>
+Description: A very simple current versioning system for R. It can log commands to a file, read logs and restore data as they were at any time point.
+Depends: diagram, digest
+License: GPL
+LazyLoad: yes
