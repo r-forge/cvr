@@ -8,8 +8,11 @@
 cvrdo(xpression, comment)
 }
 \arguments{
-  \item{xpression}{ any valid R command, in ". If " have to be used, simply write them twice. }
+  \item{xpression}{ any R command, in ". If " have to be used, put a \ before it. }
   \item{comment}{ an optional comment, which will be stored in the logfile· }
+}
+\details{
+  expression is evaluated. In case there is an error, the execution of cvrdo is stopped and the user is warned. In case it works and modifies the R workspace, expression is logged in the transformation file. If there is no modification to the R workspace, the expression is evaluated but not logged. 
 }
 \author{ Andrea De Cesarei andrea.dece@gmail.com }
 

@@ -1,61 +1,81 @@
-
-md5sum <- function(x) {
-	md5s <- digest(x)
+dircheck <- function(){
+  if (file.access(getwd(), 6) < 0){
+    cat("\nYou have no write permission in this folder:\n")
+    cat(getwd())
+    cat("\nPlease) set another working directory.\n")
+    return(FALSE)
+  }
+  else{
+    return(TRUE)
+  }
+    
+} # end of function dircheck()
+md5sum <- function() {
+  if (dircheck()==TRUE){
+        save(file = "tmpWorkspace", list=ls(envir= .GlobalEnv))
+	md5s <- digest('tmpWorkspace', file=TRUE)
+        file.remove('tmpWorkspace')
 	return(md5s)
+      }
 } # end of function md5sum
-
+
 cvrinit <- function(){
+  if (dircheck()==TRUE){
 	if (!exists('.cvrvn', envir= .GlobalEnv)){
 		assign(".cvrvn", 0, envir = .GlobalEnv)
 	}
 	if (!file.exists('transformations.cvr')){
 		file.create('transformations.cvr')
 		}
+  }
 } # end of function cvrinit
 
 cvrread <- function(){
 	transformations <- c()
+        rawtext <- c()
 	cvrinit()
-	cvrfile <- file("transformations.cvr", "r")
-	cvrtext <- readLines(cvrfile )
-	close(cvrfile)
-	if (length(cvrtext) > 1){
-		recnum <- length(cvrtext)/6
-		transformations <- data.frame(
-				versionnumber=c(cvrtext[1+(1:recnum-1)*6]), 
-				vnbefore= c(cvrtext[2+(1:recnum-1)*6]),
-				md5before= c(cvrtext[3+(1:recnum-1)*6]), 
-				expression= c(cvrtext[4+(1:recnum-1)*6]), 
-				md5after= c(cvrtext[5+(1:recnum-1)*6]), 
-				comments= c(cvrtext[6+(1:recnum-1)*6]), 
-				stringsAsFactors = FALSE)
-	}
+        #rawtext <- scan('transformations.cvr', what=character(6),sep='\t')
+        #transformations <- data.frame(matrix(rawtext, nrow=length(rawtext)/6, ncol=6, byrow=TRUE), stringsAsFactors=FALSE)
+        transformations <- read.table("transformations.cvr", allowEscapes=T, stringsAsFactors=F)
+        names(transformations) <- c('versionnumber', 'vnbefore', 'md5before', 'expression', 'md5after', 'comments')
 	return(transformations)
 } # end of function cvrread
 
 cvrlog <- function(md5before, expression, md5after, comments){
+  if (dircheck()==TRUE){
 	cvrinit()
 	tr<- cvrread()
 	vnbefore<- get('.cvrvn', envir=.GlobalEnv)
 	versionnumber <- floor(runif(1)*10000)
 	while(versionnumber %in% tr$versionnumber){ versionnumber <- floor(runif(1)*10000) }
-	cat(paste(versionnumber, '\n', vnbefore, '\n', md5before, '\n', expression, '\n', md5after, '\n', comments, '\n',sep=''), file='cvr.temp')
+        cat(paste(versionnumber, '\t', vnbefore, '\t', md5before, '\t', deparse(expression), '\t', md5after, '\t', comments, '\n',sep=''), file='cvr.temp')
 	file.append('transformations.cvr', 'cvr.temp')
 	file.remove('cvr.temp')
 	assign(".cvrvn", versionnumber , envir = .GlobalEnv)
+      }
 } # end of function cvrlog
 
 cvrdo <- function(xpression, comment='uncommented'){
+  if (dircheck()==TRUE){
 	cvrinit()
-	origmd5 <- md5sum(ls(envir=.GlobalEnv))
-	eval(parse(text=xpression), envir = .GlobalEnv)
-	if (md5sum(ls(envir=.GlobalEnv))==origmd5) {
+	origmd5 <- md5sum()
+        ThisErr <- try(eval(parse(text=xpression), envir = .GlobalEnv), silent=TRUE)
+        if (class(ThisErr)=="try-error"){
+          cat("There was an error!\n")
+          cat("R says:\n")
+          cat(geterrmessage())
+          cat("cvrdo interrupted, no command executed, no data logged.\n")
+        }
+        else{ # if not error
+          if (md5sum()==origmd5) {
 		#cat("\nunchanged!\n")
 		}
-	else { 
+          else { 
 		#cat("\nChanged!\n")
-		cvrlog(origmd5 , xpression, md5sum(ls()), comment)
-	}
+		cvrlog(origmd5 , xpression, md5sum(), comment)
+          }
+        } # if new error
+      }
 } # end of function cvrdo 
 
 
