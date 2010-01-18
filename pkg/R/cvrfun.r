@@ -34,10 +34,13 @@ cvrread <- function(){
 	transformations <- c()
         rawtext <- c()
 	cvrinit()
-        #rawtext <- scan('transformations.cvr', what=character(6),sep='\t')
-        #transformations <- data.frame(matrix(rawtext, nrow=length(rawtext)/6, ncol=6, byrow=TRUE), stringsAsFactors=FALSE)
-        transformations <- read.table("transformations.cvr", allowEscapes=T, stringsAsFactors=F)
-        names(transformations) <- c('versionnumber', 'vnbefore', 'md5before', 'expression', 'md5after', 'comments')
+        if (file.info('transformations.cvr')$size >0){
+           transformations <- read.table("transformations.cvr", allowEscapes=T, stringsAsFactors=F)
+           names(transformations) <- c('versionnumber', 'vnbefore', 'md5before', 'expression', 'md5after', 'comments')
+        }
+        else{
+          transformations <- data.frame()
+        }        
 	return(transformations)
 } # end of function cvrread
 
