@@ -1,6 +1,10 @@
 \name{cvrgraph}
-\alias{cvrgraph}
-\title{ plots a graphical representation of CVR session }
+\alias{sons}
+\alias{cousins}
+\alias{mother}
+\alias{generation}
+\alias{bronum}
+\title{plots a graphical representation of CVR session}
 \description{
   reads the CVR log file and plots a graphical representation of all commands which have been logged.
 }

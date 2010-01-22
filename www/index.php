@@ -46,35 +46,24 @@ echo $contents; } ?>
 <p> This is cvr. <br />
 It is (will be) a current versioning system for R workspaces. It logs any command which modifies the R workspace (modifications are detected by the md5 hash of the R workspace). <br />
 Users can then read the history of the transformations done, plot a flowchart, or rewind to any step in time. Each command can also be tagged by a comment.<br />
-<p>Here is an example: </p>
-<p>...following the fist few operations...</p>
 
-<p>library(cvr)<br />
-cvrdo('a &lt;- 1', 'first change')<br />
-cvrdo('b &lt;- 2', 'second change')<br />
-cvrdo('a &lt;- 1', 'this will not be logged')<br />
-cvrdo('d &lt;- a + b', 'simple operation')<br />
-cvrgraph()<br /></p>
-<p align="left"><a href="images/cvr1.png"><img src="images/cvr1.png" width="297" height="301" /></a></p>
-<p>...rewinding...</p>
-
-<p>cvrrewind(7536)<br />
-cvrgraph()<br /></p>
-
-<p align="left"><a href="images/cvr2.png"><img src="images/cvr2.png" width="297" height="301" /></a></p>
-
-<p>...branching...</p>
-
-<p>cvrdo('e &lt;- max(a,b)', 'simple operation')<br />
-cvrgraph()<br /></p>
-
-<p align="left"><a href="images/cvr3.png"><img src="images/cvr3.png" width="297" height="301" /></a></p>
-
-<p>(clearly, some work has yet to be done for correct positioning... :-)</p>
-
-</p>
 
 <p> The <strong>project summary page</strong> you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>. </p>
+
+<p>As an image is worth a thousand words, here is an example of a structures session:</p>
+<img src="images/cvr1.png" width="300" /><br />
+(grey is where you started the session, red is where you are now. Each number corresponds to a "session state")
+
+<p>You can go forward and backwards in the session (here I went back 1 step, as if I hit the cancel button):</p>
+<img src="images/cvr2.png" width="300" /><br />
+
+<p>after a while things get complicated, but you'll still se a nice overview of your session history...</p>
+<img src="images/cvrgraph4.png" width="300" /><br />
+
+<p> <em>January 22: great improvement in the cvrgraph function!! Look at how it was (left) and how it is (right)!</em></p>
+<img src="images/cvrgraph.png" width="300" /><br />
+
+
 
 </body>
 </html>
